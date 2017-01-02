@@ -1,2 +1,17 @@
+Shap's Bytes
+=========
+[![Build Status](https://travis-ci.org/theshapguy/bytes.svg?branch=master)](https://travis-ci.org/theshapguy/bytes)
 
-This is my blog at [theshapguy.com](https://theshapguy.com/). Some drafts are included in this repo. So if you want  sneek peek on what I'm working on this is best.
+This is my blog at [theshapguy.com](https://theshapguy.com/). Drafts are included in this `source` branch. Sneek peek on what I'm working on is available here.
+
+
+License
+-------
+
+© 2017 Shapath Neupane. 3-Clause BSD License.
+
+
+Author Information
+------------------
+
+[@theshapguy](http://twitter.com/theshapguy)

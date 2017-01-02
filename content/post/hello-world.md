@@ -20,7 +20,7 @@ Not to mention, with is blog, I want to make myself more **liable** when I'm cre
 My first step to *not let perfectionism boss me around*; this blog itself. If some links do
 not work please allow me some time to fix it. Also I'll be making few changes to this blog
 throughout the year. If there are any problems or want to contact me -
-this twitter account [@theshapguy](http://twitter.com/theshapguy.com/) is best.
+this twitter account [@theshapguy](http://twitter.com/theshapguy/) is best.
 
 Now, lets go 2017!   🎉🎉🎉
 
