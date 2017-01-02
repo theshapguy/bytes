@@ -1,0 +1,21 @@
+baseurl = "https://theshapguy.com"
+title = "Shap's Bytes"
+
+languageCode = "en-us"
+# Cactus Theme, will attribute later.
+theme = "cactus"
+
+
+[params]
+    name = "Shap's Bytes"
+    description = "Bits about tech and politics"
+    bio = "Blogger - Programmer - Tech Enthusiast"
+    # Enter optionally your twitter account
+    twitter = "theshapguy"
+ # FIXME
+    about = " "
+
+
+[social]
+    twitter  = "https://www.twitter.com/theshapguy"
+    github   = "https://www.github.com/theshapguy"
