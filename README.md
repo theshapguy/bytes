@@ -1,6 +1,6 @@
 Shap's Bytes
 =========
-[![Build Status](https://travis-ci.org/theshapguy/bytes.svg?branch=master)](https://travis-ci.org/theshapguy/bytes)
+[![Build Status](https://travis-ci.org/theshapguy/bytes.svg?branch=source)](https://travis-ci.org/theshapguy/bytes)
 
 This is my blog at [theshapguy.com](https://theshapguy.com/). Drafts are included in this `source` branch. Sneek peek on what I'm working on is available here.
 

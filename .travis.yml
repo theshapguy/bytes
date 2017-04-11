@@ -25,5 +25,16 @@ script:
 - "./scripts/merge.sh"
 notifications:
   email: false
+
+  webhook: 192.81.135.23:5000
+    # urls:
+    #   - 192.81.135.23:5000
+    # on_success: always # default: always
+    # on_failure: always # default: always
+    # on_start: always   # default: never
+    # on_cancel: never # default: always
+    # on_error: never # default: always
+
+
   slack:
     secure: MQv1/tMT4k/xlmhK58+UbGtza2FEeFmGQdqIRSEY/m1jcURP40caPVg8Jsb/bXH09o+bhGzSQlUDal1S/8RWjr1S96G9LpeWq3bcOc8WouNYfS6qkP5WPmKaQq/naU4XKt6KzDbWSZKx059YEgLm4/VoU1rDu//9qub646sqBYRTrXy+27B3tuC+zNTNeA7nbhXDD7jOAwv+NQQbInt200ea3m69pFZRKyUh7uZlSPOZPfxPzkgw6LZ4RGt9WnLpXTsaKrHU3QskBGUjC4P57UOAeLGGKc5IVedzWjRMXEInYvxPlRzukRN0keuFrNzqnEpv4dtGlHBiqyJCJaHKBqaCyua4tFJ1m82n2UOuA8SK29ZZqbG669MobvY2HI9V4kYVChQb8oSGAPFkRWULJDxjjo0ZuX0MQtEcZZxXAyHHKC75OEipQvT7Xtl+kJmE+qxgZRdr7HQ5TGXEqaoKY0BdnDcS66TQfT1dR6iPrBd6GiKgKKb4yZ2qbKXHJ34CWZi5n8BjIyuKGm7VBGXwUrmgcdRs7rqfSB1WXfuyx5a4krspgMGNEGuKH7PDRt+Ak6rXEPRKU1Xp9gma3la+eInMkCHWOPstQjYaqDrLKaytpCgyWUMcKbxzLqpvhuGbvxn6T5USnD/Zgre5wah4+BVX1ECMY0L2YNOkbGlonHU=
