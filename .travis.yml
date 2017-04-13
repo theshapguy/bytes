@@ -25,15 +25,14 @@ script:
 - "./scripts/merge.sh"
 notifications:
   email: false
-
-  webhook: 192.81.135.23:5000
-    # urls:
-    #   - 192.81.135.23:5000
-    # on_success: always # default: always
-    # on_failure: always # default: always
-    # on_start: always   # default: never
-    # on_cancel: never # default: always
-    # on_error: never # default: always
+  webhook:
+    urls:
+      - 192.81.135.23:5000
+    on_success: always # default: always
+    on_failure: always # default: always
+    on_start: always   # default: never
+    on_cancel: never # default: always
+    on_error: never # default: always
 
 
   slack:
