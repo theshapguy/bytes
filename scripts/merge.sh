@@ -20,7 +20,7 @@ rm -rf /tmp/public
 mv public /tmp
 
 git config user.name "Travis CI"
-git config user.email "me@theshapguy.com"
+git config user.email "ci@travis.com"
 git config --global push.default simple
 
 git branch -a

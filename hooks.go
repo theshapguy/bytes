@@ -2,7 +2,7 @@ package main
 
 /*
 
-Copyright 2017 Shapath Neupane
+Copyright 2017 Shapath Neupane (@theshapguy)
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
@@ -16,80 +16,30 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 ------------------------------------------------
 
-Listner - written in Golang because it's native web server is much more robust than Python.
+Listner - written in Go because it's native web server is much more robust than Python. Plus its fun to write Go!
 
 NOTE: Make sure you are using the right domain for travis [.com] or [.org]
 
 */
 
 import (
-	// "crypto"
+    "fmt"
+    "bytes"
+	"crypto"
 	"crypto/rsa"
-	// "crypto/sha1"
+	"crypto/sha1"
 	"crypto/x509"
 	"encoding/base64"
-    "encoding/pem"
 	"encoding/json"
+	"encoding/pem"
 	"log"
+    "errors"
 	"net/http"
+    "os/exec"
+
 )
 
-type Payload struct {
-	ID             int         `json:"id"`
-	Number         string      `json:"number"`
-	Status         interface{} `json:"status"`
-	StartedAt      interface{} `json:"started_at"`
-	FinishedAt     interface{} `json:"finished_at"`
-	StatusMessage  string      `json:"status_message"`
-	Commit         string      `json:"commit"`
-	Branch         string      `json:"branch"`
-	Message        string      `json:"message"`
-	CompareURL     string      `json:"compare_url"`
-	CommittedAt    string      `json:"committed_at"`
-	CommitterName  string      `json:"committer_name"`
-	CommitterEmail string      `json:"committer_email"`
-	AuthorName     string      `json:"author_name"`
-	AuthorEmail    string      `json:"author_email"`
-	Type           string      `json:"type"`
-	BuildURL       string      `json:"build_url"`
-	Repository     struct {
-		ID        int    `json:"id"`
-		Name      string `json:"name"`
-		OwnerName string `json:"owner_name"`
-		URL       string `json:"url"`
-	} `json:"repository"`
-	Config struct {
-		Notifications struct {
-			Webhooks []string `json:"webhooks"`
-		} `json:"notifications"`
-	} `json:"config"`
-	Matrix []struct {
-		ID           int         `json:"id"`
-		RepositoryID int         `json:"repository_id"`
-		Number       string      `json:"number"`
-		State        string      `json:"state"`
-		StartedAt    interface{} `json:"started_at"`
-		FinishedAt   interface{} `json:"finished_at"`
-		Config       struct {
-			Notifications struct {
-				Webhooks []string `json:"webhooks"`
-			} `json:"notifications"`
-		} `json:"config"`
-		Status         interface{} `json:"status"`
-		Log            string      `json:"log"`
-		Result         interface{} `json:"result"`
-		ParentID       int         `json:"parent_id"`
-		Commit         string      `json:"commit"`
-		Branch         string      `json:"branch"`
-		Message        string      `json:"message"`
-		CommittedAt    string      `json:"committed_at"`
-		CommitterName  string      `json:"committer_name"`
-		CommitterEmail string      `json:"committer_email"`
-		AuthorName     string      `json:"author_name"`
-		AuthorEmail    string      `json:"author_email"`
-		CompareURL     string      `json:"compare_url"`
-	} `json:"matrix"`
-}
+var logPrint = log.Println
 
 type ConfigKey struct {
 	Config struct {
@@ -113,43 +63,41 @@ type ConfigKey struct {
 	} `json:"config"`
 }
 
-var logPrint = log.Println
+func PayloadSignature(r *http.Request) ([]byte, error) {
 
-func PayloadSignature(h *http.Request) string {
-
-	signature := h.Header.Get("HTTP_SIGNATURE")
-	b64, err := base64.URLEncoding.DecodeString(signature)
+	signature := r.Header.Get("Signature")
+	b64, err := base64.StdEncoding.DecodeString(signature)
 	if err != nil {
-		log.Println("Error Base 64")
+        return nil, errors.New("cannot decode signature")
 	}
 
-	return string(b64)
+	return b64, nil
 }
 
-func parsePublicKey(key string) *rsa.PublicKey {
+func parsePublicKey(key string) (*rsa.PublicKey, error) {
 
 	// https://golang.org/pkg/encoding/pem/#Block
 	block, _ := pem.Decode([]byte(key))
 
 	if block == nil || block.Type != "PUBLIC KEY" {
-		log.Println("Error Parsing Public Key")
+		return nil, errors.New("invalid public key")
 	}
 
 	publicKey, err := x509.ParsePKIXPublicKey(block.Bytes)
-    if err != nil {
-        log.Fatal(err)
-    }
+	if err != nil {
+        return nil, errors.New("invalid public key")
+	}
 
-    return publicKey.(*rsa.PublicKey)
+	return publicKey.(*rsa.PublicKey), nil
 
 }
 
-func TravisPublicKey() *rsa.PublicKey {
+func TravisPublicKey() (*rsa.PublicKey, error) {
 	// NOTE: Use """https://api.travis-ci.com/config""" for private repos.
 	response, err := http.Get("https://api.travis-ci.org/config")
 
 	if err != nil {
-		log.Println("Error Fetching Travis Config Private Key")
+        return nil, errors.New("cannot fetch travis public key")
 	}
 	defer response.Body.Close()
 
@@ -157,40 +105,102 @@ func TravisPublicKey() *rsa.PublicKey {
 	var t ConfigKey
 	err = decoder.Decode(&t)
 	if err != nil {
-		log.Println(err)
+		return nil, errors.New("cannot decode travis public key")
 	}
 
-	return parsePublicKey(t.Config.Notifications.Webhook.PublicKey)
+    key, err := parsePublicKey(t.Config.Notifications.Webhook.PublicKey)
+    if err != nil{
+        return nil, err
+    }
+
+	return key, nil
 
 }
 
-func DeployHandler(w http.ResponseWriter, h *http.Request) {
+func PayloadDigest(payload string) []byte {
+	hash := sha1.New()
+	hash.Write([]byte(payload))
+	return hash.Sum(nil)
 
-    key := TravisPublicKey()
-    signature := PayloadSignature(h)
-
-    // decodeBytes := bytes.NewBufferString(h.FormValue("payload"))
-    // decoder := json.NewDecoder(decodeBytes)
-    // var p Payload
-    // err := decoder.Decode(&p)
-    // if err != nil {
-    //     log.Println(err)
-    // }
-    logPrint("Key")
-    logPrint(key)
-    logPrint("\n")
-
-    logPrint("payload")
-    logPrint(h.FormValue("payload"))
-    logPrint("\n")
-
-
-    logPrint("signature")
-    logPrint(signature)
-    logPrint("\n")
 }
+
+
+func RespondWithError(w http.ResponseWriter, m string) {
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(401)
+    message := fmt.Sprintf("{\"message\": \"%s\"}", m)
+    w.Write([]byte(message))
+}
+
+func RespondWithSuccess(w http.ResponseWriter, m string) {
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(200)
+    message := fmt.Sprintf("{\"message\": \"%s\"}", m)
+    w.Write([]byte(message))
+}
+
+
+func DeployHandler(w http.ResponseWriter, r *http.Request) {
+
+	key, err := TravisPublicKey()
+    if err != nil{
+        RespondWithError(w, err.Error())
+        return
+    }
+	signature, err := PayloadSignature(r)
+    if err != nil{
+        RespondWithError(w, err.Error())
+        return
+    }
+	payload := PayloadDigest(r.FormValue("payload"))
+
+	err = rsa.VerifyPKCS1v15(key, crypto.SHA1, payload, signature)
+
+	if err != nil {
+        RespondWithError(w, errors.New("unauthorized payload").Error())
+        return
+	}
+
+    RespondWithSuccess(w, "payload verified")
+    Deploy()
+}
+
+
+func SlackSend(payload string){
+    // notify = Get Slack URL
+    notify := "https://hooks.slack.com/services/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"
+
+   http.Post(notify, "application/json", bytes.NewBufferString(payload))
+
+
+
+}
+
+func Deploy(){
+
+    cmd, err := exec.Command("sh", "./scripts/deploy.sh").Output()
+    if err != nil{
+
+    payload := `{"channel": "#blog", "username": "deploybot", "text": " deployment failed: errors with deploy shell script", "icon_emoji": ":warning:"}`
+
+        logPrint(cmd)
+        logPrint(err)
+
+        SlackSend(payload)
+        return
+    }
+
+    payload := `{"channel": "#blog", "username": "deploybot", "text": "New posts are now live!! :pray:", "icon_emoji": ":tada:"}'`
+    SlackSend(payload)
+}
+
 
 func main() {
-	http.HandleFunc("/", DeployHandler)
-	log.Fatal(http.ListenAndServe(":5000", nil))
+
+    Deploy()
+
+	// http.HandleFunc("/", DeployHandler)
+	// log.Fatal(http.ListenAndServe(":5000", nil))
 }
+
+
