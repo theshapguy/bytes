@@ -27,7 +27,7 @@ notifications:
   email: false
   webhook:
     urls:
-      - 192.81.135.23:5000
+      - http://b6ab4dda.ngrok.io
     on_success: always # default: always
     on_failure: always # default: always
     on_start: always   # default: never
