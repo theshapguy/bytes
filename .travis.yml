@@ -27,7 +27,8 @@ notifications:
   email: false
   webhooks:
     urls:
-      - http://192.81.135.23:5000
+      # My deploy hook
+      - https://theshapguy.com/deploy
     on_success: always # default: always
     on_failure: never # default: always
     on_start: never   # default: never

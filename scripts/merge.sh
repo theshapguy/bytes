@@ -18,6 +18,7 @@ hugo -d public
 # moving generated files to /tmp
 rm -rf /tmp/public
 mv public /tmp
+mv scripts /tmp/public/scripts
 
 git config user.name "Travis CI"
 git config user.email "ci@travis.com"
