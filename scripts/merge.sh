@@ -14,6 +14,7 @@ fi
 
 # Generate site in public directory
 hugo -d public
+go build -o scripts/hooks scripts/hooks.go
 
 # moving generated files to /tmp
 rm -rf /tmp/public
@@ -46,6 +47,7 @@ msg=":closed_book: Travis: rebuilding site $now"
 if [ $# -eq 1 ]
   then msg="$1"
 fi
+#Automated Message
 git commit -m "$msg"
 
 # Push Branch Live

@@ -7,6 +7,7 @@ then
 fi
 
 git checkout master
-git pull
+ssh-agent bash -c 'ssh-add ~/.ssh/bytes_id_rsa; git pull'
+supervisorctl restart nginx
 
 exit 0

@@ -2,7 +2,6 @@
 date = "2017-04-11T13:10:50-06:00"
 description = "A Git Team Workflow"
 title = "Github+1 Workflow"
-draft = true
 +++
 
 > **NOTE: A *comprehensive* read**

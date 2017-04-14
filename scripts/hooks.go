@@ -141,7 +141,8 @@ func RespondWithSuccess(w http.ResponseWriter, m string) {
 func DeployHandler(w http.ResponseWriter, r *http.Request) {
 
     if r.Method != "POST" {
-        RespondWithError("only travis ci allowed here")
+        RespondWithError(w, "only travis ci allowed here")
+        return
     }
 
     key, err := TravisPublicKey()
@@ -162,9 +163,8 @@ func DeployHandler(w http.ResponseWriter, r *http.Request) {
         RespondWithError(w, errors.New("unauthorized payload").Error())
         return
     }
-
-    RespondWithSuccess(w, "payload verified")
     Deploy()
+    RespondWithSuccess(w, "payload verified")
 }
 
 func SlackSend(payload string) {
@@ -192,6 +192,7 @@ func Deploy() {
     if err != nil {
 
         payload := `{"channel": "#blog", "username": "deploybot", "text": " _deployment failed_: errors with deploy shell script. Check supervisord logs", "icon_emoji": ":warning:"}`
+        logPrint("error executing command")
         logPrint(string(cmd))
         SlackSend(payload)
         return
@@ -202,6 +203,7 @@ func Deploy() {
 }
 
 func main() {
+    Deploy()
     http.HandleFunc("/", DeployHandler)
     log.Fatal(http.ListenAndServe(":5000", nil))
 }
