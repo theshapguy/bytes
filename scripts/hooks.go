@@ -188,7 +188,10 @@ func SlackSend(payload string) {
 
 func Deploy() {
 
-    cmd, err := exec.Command("sh", "./scripts/deploy.sh").Output()
+    cmd, err := exec.Command("./scripts/deploy.sh").Output()
+    // dir, _ := os.Getwd()
+    // logPrint(dir)
+
     if err != nil {
 
         payload := `{"channel": "#blog", "username": "deploybot", "text": " _deployment failed_: errors with deploy shell script. Check supervisord logs", "icon_emoji": ":warning:"}`
@@ -198,12 +201,13 @@ func Deploy() {
         return
     }
 
+    logPrint(string(cmd))
+    logPrint(string("successful deploy"))
     payload := `{"channel": "#blog", "username": "deploybot", "text": "New posts are now _live_!! :pray:", "icon_emoji": ":tada:"}'`
     SlackSend(payload)
 }
 
 func main() {
-    Deploy()
     http.HandleFunc("/", DeployHandler)
     log.Fatal(http.ListenAndServe(":5000", nil))
 }
