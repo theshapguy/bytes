@@ -90,7 +90,7 @@ closes #125 or closes #123, #245, #992
 **Breaking Change**
 All breaking changes have to be mentioned in footer with the description of the change, justification and migration notes.
 
-```
+```shell
 BREAKING CHANGE:
 
 `port-runner` command line option has changed to `runner-port`, so that it is
