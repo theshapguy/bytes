@@ -7,23 +7,20 @@ then
 fi
 
 if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-      hugo -d public
       echo "travis should not deploy from pull requests"
       exit 0
 fi
 
 # Generate site in public directory
-hugo -d public
+hugo -d live/
+ls public
 go build -o scripts/hooks scripts/hooks.go
 
 # moving generated files to /tmp
-rm -rf /tmp/public
-mv public /tmp
-mv scripts /tmp/public/scripts
-
-git config user.name "auto: Shap Guy"
-git config user.email "me@theshapguy.com"
-git config --global push.default simple
+rm -rf /tmp/live
+mv live /tmp
+mv scripts /tmp/live/scripts
+ls /tmp/live/
 
 git branch -a
 
@@ -34,8 +31,10 @@ git checkout -t -b master origin/master
 rm -rf `pwd`/*
 
 # moving live website to clean website
-mv /tmp/public/* .
-rm -r /tmp/public/
+mv /tmp/live/* .
+rm -r /tmp/live/
+
+ls
 
 #Adding and Committing with Date
 git add -A

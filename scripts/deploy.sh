@@ -7,7 +7,9 @@ then
 fi
 
 git checkout master
-ssh-agent bash -c 'ssh-add ~/.ssh/bytes_id_rsa; git pull'
+git config user.email "no@email.com"
+git config user.name "Shap Guy"
+ssh-agent bash -c 'ssh-add ~/.ssh/bytes_id_rsa; git pull --rebase origin master'
 supervisorctl restart nginx
 
 exit 0

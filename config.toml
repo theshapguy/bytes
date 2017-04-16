@@ -2,16 +2,12 @@ baseurl = "https://theshapguy.com/"
 title = "Shap's Bytes"
 
 languageCode = "en-us"
-theme = "cactus"
-
-
+theme ="cactus-pro"
 [params]
     name = "Shap's Bytes"
     description = "Bits about tech and politics"
-    bio = "Blogger - Programmer - Tech Enthusiast"
+    bio = "*Your future is created by what you do today, ~~not tomorrow~~*"
     twitter = "theshapguy"
-    about = "pragmatic."
-
 
 [social]
     twitter  = "https://www.twitter.com/theshapguy"
