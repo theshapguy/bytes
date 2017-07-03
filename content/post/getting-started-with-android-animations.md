@@ -2,12 +2,11 @@
 description = "A quick guide to the basics of Android animations"
 title = "Getting Started with Android Animations"
 date = "2017-07-03T09:19:07-06:00"
-draft = true
+draft = false
 categories = ["android"]
 tags = ["android", "animations"]
 
 +++
-
 
 
 Android Animations has come a long way from Froyo to Honeycomb and then to Marshmallow. This has included a lot of API changes in Android. The truth - there is no animation library that you can just include in your app and they start automagically working. Animations need to be coded. There is no way around it. Even though, animateLayoutChanges="true" has some nice usages, it's likely rare.
