@@ -83,7 +83,7 @@ With AnimationSet you can no longer use the view.animate() but now are using the
         set.start();
       // The button will translate and then fade out.
       // This example is just scratching the surface.
-    ```
+```
 
 In the end...
 
