@@ -1,12 +1,14 @@
 +++
 description = "A quick guide to the basics of Android animations"
 title = "Getting Started with Android Animations"
-date = "2015-07-03T09:19:07-06:00"
+date = "2017-07-03T09:19:07-06:00"
 draft = true
 categories = ["android"]
 tags = ["android", "animations"]
 
 +++
+
+
 
 Android Animations has come a long way from Froyo to Honeycomb and then to Marshmallow. This has included a lot of API changes in Android. The truth - there is no animation library that you can just include in your app and they start automagically working. Animations need to be coded. There is no way around it. Even though, animateLayoutChanges="true" has some nice usages, it's likely rare.
 
@@ -83,8 +85,12 @@ With AnimationSet you can no longer use the view.animate() but now are using the
         set.start();
       // The button will translate and then fade out.
       // This example is just scratching the surface.
-    ```
+```
 
 In the end...
 
 With ViewPropertyAnimator, Interpolators and AnimatorSet you can choreograph many animations that delight the users with the use of motion. ViewPropertyAnimator has a lot of advantages of its predecessor ObjectAnimator, namely the fluent API. However ObjectAnimator still is the mother of all while choreographing complex animations. Also, don't forget interpolators. Its these that make your animations delight the user.
+
+```
+NOTE: This is a article I had on my old blog that I ported over to this version.
+```
