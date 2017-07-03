@@ -24,3 +24,7 @@ this twitter account [@theshapguy](http://twitter.com/theshapguy/) is best.
 
 Now, lets go 2017!   🎉🎉🎉
 
+**UPDATE:**
+
+I have not made a project each month however I have been successful releasing my first Android App. There are more to come by the end of this year. (- July 2017)
+
