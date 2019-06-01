@@ -3,9 +3,12 @@ title = "Shap's Bytes"
 
 languageCode = "en-us"
 theme ="cactus-pro"
+googleAnalytics="UA-141257382-1"
+hasCJKLanguage = false
+
 [params]
     name = "Shap's Bytes"
-    description = "Bits about tech and politics"
+    description = "Bits about tech"
     bio = "*Your future is created by what you do today, ~~not tomorrow~~*"
     twitter = "theshapguy"
 
