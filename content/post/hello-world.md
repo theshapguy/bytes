@@ -3,7 +3,7 @@
 title = "Hello World"
 description = "My new years resolution."
 date = "2017-01-01T21:20:13-07:00"
-draft = false
+draft = true
 +++
 
 This is my new blog [theshapguy.com](https://theshapguy.com). Also, my new year's resolution.
